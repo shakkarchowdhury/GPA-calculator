@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>HSC GPA Calculator</title>
+  <style>
+    /* Reset basics */
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+
+    body {
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364); /* Dark blue-green gradient */
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #fff;
+    }
+
+    .container {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(15px);
+      border-radius: 20px;
+      padding: 40px 50px;
+      max-width: 450px;
+      width: 90%;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.6);
+      text-align: center;
+      transition: transform 0.3s ease;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .container:hover {
+      transform: scale(1.02);
+    }
+
+    h2 {
+      margin-bottom: 30px;
+      font-size: 28px;
+      color: #fff;
+      text-shadow: 0 2px 6px rgba(0,0,0,0.7);
+    }
+
+    .subject {
+      margin: 12px 0;
+      text-align: left;
+      font-size: 16px;
+    }
+
+    select {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border-radius: 8px;
+      border: none;
+      outline: none;
+      font-size: 16px;
+      background: rgba(255,255,255,0.1);
+      color: #fff;
+    }
+
+    select option {
+      background: #203a43; /* Dark background for options */
+      color: #fff;
+    }
+
+    button {
+      margin-top: 25px;
+      padding: 12px 20px;
+      font-size: 18px;
+      font-weight: bold;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      background: linear-gradient(90deg, #00c6ff, #0072ff); /* Cool blue gradient */
+      color: #fff;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    }
+
+    button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.7);
+    }
+
+    #result {
+      margin-top: 30px;
+      padding: 20px;
+      border-radius: 15px;
+      background: rgba(255, 255, 255, 0.1);
+      font-size: 18px;
+      font-weight: bold;
+      color: #fff;
+      text-shadow: 0 2px 6px rgba(0,0,0,0.6);
+      opacity: 0;
+      transform: scale(0.8) rotate(-5deg);
+      transition: all 0.6s ease;
+    }
+
+    #result.show {
+      opacity: 1;
+      transform: scale(1) rotate(0deg);
+      animation: pop 0.6s ease forwards;
+    }
+
+    @keyframes pop {
+      0% { transform: scale(0.5) rotate(-10deg); opacity: 0; }
+      60% { transform: scale(1.1) rotate(3deg); opacity: 1; }
+      100% { transform: scale(1) rotate(0deg); }
+    }
+
+    strong.final-gpa {
+      font-size: 26px;
+      color: #00ffea;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.7);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>HSC GPA Calculator</h2>
+    
+    <div class="subject">Bangla:
+      <select id="bangla">
+        <option value="5">A+</option>
+        <option value="4" selected>A</option>
+        <option value="3.5">A-</option>
+        <option value="3">B</option>
+        <option value="2">C</option>
+        <option value="1">D</option>
+        <option value="0">F</option>
+      </select>
+    </div>
+    
+    <div class="subject">English:
+      <select id="english">
+        <option value="5">A+</option>
+        <option value="4" selected>A</option>
+        <option value="3.5">A-</option>
+        <option value="3">B</option>
+        <option value="2">C</option>
+        <option value="1">D</option>
+        <option value="0">F</option>
+      </select>
+    </div>
+
+    <div class="subject">ICT:
+      <select id="ict">
+        <option value="5">A+</option>
+        <option value="4">A</option>
+        <option value="3.5" selected>A-</option>
+        <option value="3">B</option>
+        <option value="2">C</option>
+        <option value="1">D</option>
+        <option value="0">F</option>
+      </select>
+    </div>
+
+    <div class="subject">Chemistry:
+      <select id="chem">
+        <option value="5">A+</option>
+        <option value="4">A</option>
+        <option value="3.5">A-</option>
+        <option value="3" selected>B</option>
+        <option value="2">C</option>
+        <option value="1">D</option>
+        <option value="0">F</option>
+      </select>
+    </div>
+
+    <div class="subject">Biology:
+      <select id="bio">
+        <option value="5">A+</option>
+        <option value="4">A</option>
+        <option value="3.5" selected>A-</option>
+        <option value="3">B</option>
+        <option value="2">C</option>
+        <option value="1">D</option>
+        <option value="0">F</option>
+      </select>
+    </div>
+
+    <div class="subject">Physics:
+      <select id="phy">
+        <option value="5">A+</option>
+        <option value="4" selected>A</option>
+        <option value="3.5">A-</option>
+        <option value="3">B</option>
+        <option value="2">C</option>
+        <option value="1">D</option>
+        <option value="0">F</option>
+      </select>
+    </div>
+
+    <div class="subject">Higher Math (4th Subject):
+      <select id="hmath">
+        <option value="5" selected>A+</option>
+        <option value="4">A</option>
+        <option value="3.5">A-</option>
+        <option value="3">B</option>
+        <option value="2">C</option>
+        <option value="1">D</option>
+        <option value="0">F</option>
+      </select>
+    </div>
+
+    <button onclick="calculateGPA()">Calculate GPA</button>
+    
+    <div id="result"></div>
+  </div>
+
+  <script>
+    function calculateGPA() {
+      const subjects = ['bangla','english','ict','chem','bio','phy'];
+      let sum = 0;
+      subjects.forEach(sub => sum += parseFloat(document.getElementById(sub).value));
+      
+      let baseGPA = sum / subjects.length;
+      
+      // 4th subject bonus
+      let hmath = parseFloat(document.getElementById('hmath').value);
+      let bonus = hmath > 4 ? hmath - 4 : 0;
+      
+      let finalGPA = Math.min(baseGPA + bonus, 5.0);
+      
+      const resultDiv = document.getElementById('result');
+      resultDiv.innerHTML = `
+        Base GPA: ${baseGPA.toFixed(3)} <br>
+        Bonus from Higher Math: ${bonus.toFixed(3)} <br>
+        <strong class="final-gpa">Final GPA: ${finalGPA.toFixed(3)} / 5.0</strong>
+      `;
+      
+      // Trigger animation
+      resultDiv.classList.remove('show');
+      void resultDiv.offsetWidth;
+      resultDiv.classList.add('show');
+    }
+  </script>
+</body>
+</html>
